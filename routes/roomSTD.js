@@ -5,7 +5,7 @@ const { check, validationResult } = require('express-validator');
 const db = require('monk')(process.env.mongo_url || "localhost:27017/admin");
 
 router.get('/', function(req, res, next) {
-  var ct = monk.get('announce');
+  var ct = db.get('announce');
   ct.find({}, {projection: {_id: 0, title: 1, author: 1, content: 1}})
   .then(result => {
     console.log(result)
@@ -31,7 +31,7 @@ router.post('/report', [
   }
   else{
       //insert data to DB
-      var collection = monk.get('problem');
+      var collection = db.get('problem');
       collection.insert({
           stid:req.body.stdid,
           name:req.body.name,
